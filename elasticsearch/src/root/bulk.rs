@@ -162,11 +162,8 @@ where
     B: Serialize,
 {
     /// Creates a new instance of a [bulk create operation](BulkCreateOperation)
-    pub fn create<S>(id: S, source: B) -> BulkCreateOperation<B>
-    where
-        S: Into<String>,
-    {
-        BulkCreateOperation::new(id, source)
+    pub fn create(source: B) -> BulkCreateOperation<B> {
+        BulkCreateOperation::new(source)
     }
 
     /// Creates a new instance of a [bulk index operation](BulkIndexOperation)
@@ -217,16 +214,12 @@ pub struct BulkCreateOperation<B> {
 
 impl<B> BulkCreateOperation<B> {
     /// Creates a new instance of [BulkCreateOperation]
-    pub fn new<S>(id: S, source: B) -> Self
-    where
-        S: Into<String>,
-    {
+    pub fn new(source: B) -> Self {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Create,
                     metadata: BulkMetadata {
-                        _id: Some(id.into()),
                         ..Default::default()
                     },
                 },
